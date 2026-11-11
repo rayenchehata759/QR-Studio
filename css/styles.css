@@ -1,0 +1,29 @@
+﻿/* Base document styles extracted from the original Stitch export. */
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    overscroll-behavior: none;
+  }
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+.component-error {
+  margin: 2rem auto;
+  max-width: 32rem;
+  padding: 1rem;
+  border: 1px solid #ba1a1a;
+  color: #93000a;
+  text-align: center;
+}

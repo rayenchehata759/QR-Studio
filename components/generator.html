@@ -1,0 +1,903 @@
+﻿<section
+  class="max-w-[1280px] w-full mx-auto px-margin-mobile md:px-margin pb-20"
+>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- LEFT COLUMN: Parameter Workbench (7 Cols) -->
+    <div
+      class="lg:col-span-7 bg-surface-container-lowest rounded-lg border border-[#E5E2DC] shadow-[0_2px_12px_rgba(28,28,26,0.04)] p-6 md:p-8 flex flex-col gap-6 relative"
+    >
+      <!-- Workbench Header -->
+      <div
+        class="flex items-start justify-between pb-4 border-b border-[#F0ECE6]"
+      >
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2 h-2 rounded-sm bg-primary-container"></span>
+            <h2
+              class="font-headline-md text-2xl font-semibold text-on-surface tracking-tight"
+            >
+              Configure Matrix Payload
+            </h2>
+          </div>
+          <p class="font-body-sm text-xs text-on-surface-variant">
+            Select payload architecture and tune matrix rendering parameters
+          </p>
+        </div>
+        <div
+          class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-2.5 py-1 rounded border border-[#E2DDD5] text-secondary font-label-sm text-[11px] font-semibold tracking-wider"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          LIVE PARSER
+        </div>
+      </div>
+      <!-- Payload Segmented Tabs -->
+      <div
+        class="bg-surface-container-low p-1 rounded border border-[#E5E2DC] flex items-center gap-1"
+      >
+        <button
+          class="payload-tab flex-1 py-2 px-3 rounded font-label-md text-xs text-on-surface bg-surface-container-lowest border border-[#DCD8D0] shadow-xs flex items-center justify-center gap-2 transition-all font-semibold"
+          id="tab-url"
+          onclick="switchPayloadTab('url')"
+        >
+          <span
+            class="material-symbols-outlined text-[17px] text-primary-container"
+            >link</span
+          >
+          <span>URL / Web</span>
+        </button>
+        <button
+          class="payload-tab flex-1 py-2 px-3 rounded font-label-md text-xs text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2 transition-all"
+          id="tab-text"
+          onclick="switchPayloadTab('text')"
+        >
+          <span class="material-symbols-outlined text-[17px]">notes</span>
+          <span>Plain Text</span>
+        </button>
+        <button
+          class="payload-tab flex-1 py-2 px-3 rounded font-label-md text-xs text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2 transition-all"
+          id="tab-wifi"
+          onclick="switchPayloadTab('wifi')"
+        >
+          <span class="material-symbols-outlined text-[17px]">wifi</span>
+          <span>Wi-Fi Network</span>
+        </button>
+        <button
+          class="payload-tab flex-1 py-2 px-3 rounded font-label-md text-xs text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2 transition-all"
+          id="tab-whatsapp"
+          onclick="switchPayloadTab('whatsapp')"
+        >
+          <span class="material-symbols-outlined text-[17px]">chat</span>
+          <span>WhatsApp</span>
+        </button>
+      </div>
+      <!-- Form Panels Container -->
+      <div class="space-y-5 pt-1">
+        <!-- URL Form Payload (Default) -->
+        <div class="space-y-4" id="form-panel-url">
+          <div class="flex flex-col gap-1.5">
+            <label
+              class="font-label-md text-xs text-on-surface flex items-center justify-between font-semibold"
+            >
+              <span>Website or Destination URL</span>
+              <span
+                class="font-code-sm text-[11px] text-on-surface-variant"
+                id="char-count"
+                >29 chars</span
+              >
+            </label>
+            <div class="relative flex items-center">
+              <span
+                class="absolute left-3 px-2 py-0.5 rounded border border-[#E5E2DC] bg-surface-container font-code-sm text-xs text-primary-container font-semibold"
+                >https://</span
+              >
+              <input
+                class="w-full h-11 pl-24 pr-10 rounded border border-[#DCD8D0] bg-[#FAF8F5] font-code-sm text-sm text-on-surface placeholder:text-[#A8A49D] focus:border-primary-container focus:bg-white focus:outline-none transition-all"
+                id="input-url"
+                oninput="handleUrlInput(this.value)"
+                placeholder="yourdomain.com/path"
+                type="text"
+                value="qrstudio.dev/launch"
+              />
+              <button
+                class="absolute right-3 text-on-surface-variant hover:text-on-surface transition-colors"
+                onclick="clearUrlInput()"
+                title="Clear input"
+              >
+                <span class="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Wi-Fi Form Payload -->
+        <div class="space-y-4 hidden" id="form-panel-wifi">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1.5">
+              <label class="font-label-md text-xs text-on-surface font-semibold"
+                >Network SSID</label
+              >
+              <input
+                class="h-11 px-3.5 rounded border border-[#DCD8D0] bg-[#FAF8F5] font-body-md text-on-surface focus:border-primary-container focus:bg-white focus:outline-none"
+                id="wifi-ssid"
+                type="text"
+                value="Studio_Fiber_5G"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="font-label-md text-xs text-on-surface font-semibold"
+                >Security Type</label
+              >
+              <select
+                id="wifi-security"
+                class="h-11 px-3 rounded border border-[#DCD8D0] bg-[#FAF8F5] font-body-md text-on-surface focus:border-primary-container focus:bg-white focus:outline-none"
+              >
+                <option selected="">WPA / WPA2 / WPA3</option>
+                <option>WEP</option>
+                <option>Open (No Password)</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="font-label-md text-xs text-on-surface font-semibold"
+              >Password</label
+            >
+            <input
+              class="h-11 px-3.5 rounded border border-[#DCD8D0] bg-[#FAF8F5] font-code-sm text-on-surface focus:border-primary-container focus:bg-white focus:outline-none"
+              id="wifi-password"
+              type="password"
+              value="ultra-secure-pass-2026"
+            />
+          </div>
+        </div>
+        <!-- WhatsApp Form Payload -->
+        <div class="space-y-4 hidden" id="form-panel-whatsapp">
+          <div class="flex flex-col gap-1.5">
+            <label class="font-label-md text-xs text-on-surface font-semibold"
+              >Phone Number (with Country Code)</label
+            >
+            <input
+              class="h-11 px-3.5 rounded border border-[#DCD8D0] bg-[#FAF8F5] font-code-sm text-on-surface focus:border-primary-container focus:bg-white focus:outline-none"
+              id="whatsapp-phone"
+              placeholder="+1 (555) 019-2834"
+              type="text"
+              value="+14155552671"
+            />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="font-label-md text-xs text-on-surface font-semibold"
+              >Pre-filled Chat Message</label
+            >
+            <textarea
+              class="p-3 rounded border border-[#DCD8D0] bg-[#FAF8F5] font-body-md text-on-surface focus:border-primary-container focus:bg-white focus:outline-none resize-none"
+              id="whatsapp-message"
+              rows="2"
+            >
+Hello! I would like to schedule a product demo with QR Studio.</textarea>
+          </div>
+        </div>
+        <!-- Plain Text Payload -->
+        <div class="space-y-4 hidden" id="form-panel-text">
+          <div class="flex flex-col gap-1.5">
+            <label class="font-label-md text-xs text-on-surface font-semibold"
+              >Text Content</label
+            >
+            <textarea
+              class="p-3 rounded border border-[#DCD8D0] bg-[#FAF8F5] font-body-md text-on-surface focus:border-primary-container focus:bg-white focus:outline-none resize-none"
+              id="text-content"
+              placeholder="Enter plaintext, markdown snippet, or cryptographic payload..."
+              rows="3"
+            >
+Welcome to QR Studio. Tactile visual matrices engineered for precision.</textarea>
+          </div>
+        </div>
+        <div
+          class="bg-surface-container-low rounded border border-[#E5E2DC] p-4 flex items-center gap-3"
+        >
+          <span class="material-symbols-outlined text-[18px] text-primary-container"
+            >verified</span
+          >
+          <div class="flex flex-col gap-0.5">
+            <span class="font-label-md text-xs text-on-surface font-semibold"
+              >Optimized QR output</span
+            >
+            <span class="font-body-sm text-[11px] text-on-surface-variant"
+              >High correction, standard contrast and scan-ready margins.</span
+            >
+          </div>
+        </div>
+        <!-- Primary Workbench CTA & Status Bar -->
+        <div
+          class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#F0ECE6]"
+        >
+          <div
+            class="flex items-center gap-2 text-secondary font-body-sm text-xs"
+            id="workbench-status-pill"
+          >
+            <span class="material-symbols-outlined text-[18px]">verified</span>
+            <span class="font-medium"
+              >Validated production output (Lossless SVG / 300 DPI)</span
+            >
+          </div>
+          <button
+            class="w-full sm:w-auto px-6 py-3 rounded bg-primary-container hover:bg-primary text-on-primary font-body-md text-sm font-semibold transition-all shadow-[0_2px_8px_rgba(200,75,49,0.25)] flex items-center justify-center gap-2 active:scale-95"
+            onclick="triggerGenerateEffect()"
+          >
+            <span class="material-symbols-outlined text-[18px]">sync</span>
+            <span>Generate QR Code</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT COLUMN: High-Fidelity Architectural Preview Viewport (5 Cols) -->
+    <div class="lg:col-span-5 flex flex-col gap-4 lg:sticky lg:top-20">
+      <div
+        class="bg-surface-container-lowest rounded-lg border border-[#E5E2DC] shadow-[0_2px_12px_rgba(28,28,26,0.04)] p-6 md:p-8 flex flex-col items-center"
+      >
+        <!-- Viewport Header Metadata: Tactile Architectural Proof Header -->
+        <div
+          class="w-full flex items-center justify-between pb-4 border-b border-[#F0ECE6]"
+        >
+          <div class="flex items-center gap-2">
+            <h3 class="font-headline-md text-xl font-semibold text-on-surface">
+              Proof Sheet
+            </h3>
+            <span
+              class="px-2 py-0.5 rounded border border-[#E5E2DC] bg-surface-container font-code-sm text-[11px] text-on-surface-variant font-medium"
+              >1024 — 1024 px</span
+            >
+          </div>
+          <span
+            class="font-label-sm text-[10px] uppercase tracking-widest text-secondary border border-[#DCD8D0] bg-[#FAF8F5] px-2 py-0.5 rounded font-semibold"
+            >VECTOR SVG</span
+          >
+        </div>
+        <!-- QR Frame Viewport Area styled as an architectural print proof sheet -->
+        <div
+          class="w-full max-w-[340px] aspect-square rounded bg-[#F4F1EB] border border-[#DDD8CF] p-6 flex flex-col items-center justify-center relative shadow-inner overflow-hidden transition-all mt-4"
+          id="qr-canvas-wrapper"
+        >
+          <!-- Registration Marks in 4 Corners -->
+          <div
+            class="absolute top-2 left-2 flex items-center gap-1 pointer-events-none opacity-60"
+          >
+            <span
+              class="font-code-sm text-[9px] text-[#8C877D] tracking-tighter"
+              >â”Œ 0,0 REF</span
+            >
+          </div>
+          <div
+            class="absolute top-2 right-2 flex items-center gap-1 pointer-events-none opacity-60"
+          >
+            <span
+              class="font-code-sm text-[9px] text-[#8C877D] tracking-tighter"
+              >1024px â”</span
+            >
+          </div>
+          <div
+            class="absolute bottom-2 left-2 flex items-center gap-1 pointer-events-none opacity-60"
+          >
+            <span
+              class="font-code-sm text-[9px] text-[#8C877D] tracking-tighter"
+              >â”” ISO/IEC</span
+            >
+          </div>
+          <div
+            class="absolute bottom-2 right-2 flex items-center gap-1 pointer-events-none opacity-60"
+          >
+            <span
+              class="font-code-sm text-[9px] text-[#8C877D] tracking-tighter"
+              >LVL:H30 â”˜</span
+            >
+          </div>
+          <!-- Crisp Architectural Print Proof Paper Container -->
+          <div
+            class="relative z-10 w-full h-full bg-[#FCFBF8] border border-[#E2DDD5] p-5 rounded shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center transition-all duration-300"
+            id="qr-graphic-container"
+          >
+            <svg
+              class="w-full h-full text-[#191817] fill-current"
+              id="qr-vector-svg"
+              viewBox="0 0 200 200"
+            >
+              <!-- Outer Corner Finder 1 (Top-Left) -->
+              <rect
+                class="fill-current"
+                height="56"
+                rx="4"
+                width="56"
+                x="10"
+                y="10"
+              ></rect>
+              <rect
+                fill="#FCFBF8"
+                height="36"
+                rx="2"
+                width="36"
+                x="20"
+                y="20"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="20"
+                rx="2"
+                width="20"
+                x="28"
+                y="28"
+              ></rect>
+              <!-- Outer Corner Finder 2 (Top-Right) -->
+              <rect
+                class="fill-current"
+                height="56"
+                rx="4"
+                width="56"
+                x="134"
+                y="10"
+              ></rect>
+              <rect
+                fill="#FCFBF8"
+                height="36"
+                rx="2"
+                width="36"
+                x="144"
+                y="20"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="20"
+                rx="2"
+                width="20"
+                x="152"
+                y="28"
+              ></rect>
+              <!-- Outer Corner Finder 3 (Bottom-Left) -->
+              <rect
+                class="fill-current"
+                height="56"
+                rx="4"
+                width="56"
+                x="10"
+                y="134"
+              ></rect>
+              <rect
+                fill="#FCFBF8"
+                height="36"
+                rx="2"
+                width="36"
+                x="20"
+                y="144"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="20"
+                rx="2"
+                width="20"
+                x="28"
+                y="152"
+              ></rect>
+              <!-- Timing Modules and Alignment Pattern -->
+              <rect
+                class="fill-current"
+                height="36"
+                rx="4"
+                width="36"
+                x="140"
+                y="140"
+              ></rect>
+              <rect
+                fill="#FCFBF8"
+                height="20"
+                rx="2"
+                width="20"
+                x="148"
+                y="148"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="154"
+                y="154"
+              ></rect>
+              <!-- Timing Lines (H & V) -->
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="74"
+                y="34"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="90"
+                y="34"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="106"
+                y="34"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="122"
+                y="34"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="34"
+                y="74"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="34"
+                y="90"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="34"
+                y="106"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="34"
+                y="122"
+              ></rect>
+              <!-- High Density Data Matrix Pixels in Rich Charcoal Ink with Cinnabar Accents -->
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="8"
+                x="74"
+                y="74"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="82"
+                y="74"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="98"
+                y="74"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="8"
+                x="114"
+                y="74"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="74"
+                y="90"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="16"
+                x="90"
+                y="90"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="114"
+                y="90"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="146"
+                y="90"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="8"
+                x="170"
+                y="90"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="74"
+                y="106"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="8"
+                x="90"
+                y="106"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="106"
+                y="106"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="122"
+                y="106"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="138"
+                y="106"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="16"
+                x="74"
+                y="122"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="98"
+                y="122"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="16"
+                x="114"
+                y="122"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="74"
+                y="138"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="8"
+                x="90"
+                y="138"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="106"
+                y="138"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="122"
+                y="138"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="74"
+                y="154"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="98"
+                y="154"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="8"
+                x="114"
+                y="154"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="16"
+                x="74"
+                y="170"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="98"
+                y="170"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="114"
+                y="170"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="130"
+                y="170"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="146"
+                y="74"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="16"
+                x="162"
+                y="74"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="178"
+                y="106"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="138"
+                y="122"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="154"
+                y="122"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="8"
+                rx="1"
+                width="8"
+                x="178"
+                y="122"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="178"
+                y="138"
+              ></rect>
+              <rect
+                class="fill-current"
+                height="8"
+                rx="1"
+                width="8"
+                x="178"
+                y="170"
+              ></rect>
+              <!-- Center Monogram Micro-badge -->
+              <circle
+                cx="100"
+                cy="100"
+                fill="#FCFBF8"
+                r="14"
+                stroke="#E2DDD5"
+                stroke-width="1"
+              ></circle>
+              <circle cx="100" cy="100" fill="#191817" r="10"></circle>
+              <rect
+                fill="#FCFBF8"
+                height="7"
+                width="7"
+                x="96.5"
+                y="96.5"
+              ></rect>
+              <rect
+                fill="#C84B31"
+                height="3"
+                width="3"
+                x="98.5"
+                y="98.5"
+              ></rect>
+            </svg>
+            <!-- Empty State Overlay Container (Hidden unless toggled) -->
+            <div
+              class="hidden absolute inset-0 bg-[#FCFBF8]/95 backdrop-blur-xs rounded flex flex-col items-center justify-center p-6 text-center"
+              id="qr-empty-overlay"
+            >
+              <span
+                class="material-symbols-outlined text-[44px] text-outline mb-2"
+                >qr_code_scanner</span
+              >
+              <p class="font-headline-md text-lg font-semibold text-on-surface">
+                No Payload Configured
+              </p>
+              <p
+                class="font-body-sm text-xs text-on-surface-variant max-w-[200px] mt-1"
+              >
+                Enter a destination URL or text parameter to generate code.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Real-time Status Badge Banner -->
+        <div
+          class="w-full mt-4 p-2.5 rounded border border-[#E5E2DC] bg-surface-container-low flex items-center justify-center gap-2"
+          id="preview-status-banner"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          <span
+            class="font-code-sm text-xs text-on-surface truncate"
+            id="preview-status-text"
+          >
+            Generated for https://qrstudio.dev/launch
+          </span>
+        </div>
+        <!-- Format and Resolution Presets -->
+        <div
+          class="w-full flex items-center justify-between pt-4 pb-2 border-t border-[#F0ECE6] mt-2"
+        >
+          <div
+            class="flex items-center gap-1 bg-surface-container p-0.5 rounded border border-[#E2DDD5]"
+          >
+            <button
+              class="px-2.5 py-1 rounded text-label-sm font-label-sm bg-surface-container-lowest text-on-surface shadow-xs font-semibold"
+              id="fmt-png"
+              onclick="setExportFormat('PNG')"
+            >
+              PNG
+            </button>
+            <button
+              class="px-2.5 py-1 rounded text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface"
+              id="fmt-svg"
+              onclick="setExportFormat('SVG')"
+            >
+              SVG
+            </button>
+            <button
+              class="px-2.5 py-1 rounded text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface"
+              id="fmt-webp"
+              onclick="setExportFormat('WEBP')"
+            >
+              WEBP
+            </button>
+          </div>
+          <div
+            class="flex items-center gap-1.5 font-code-sm text-xs text-on-surface-variant"
+          >
+            <span>Resolution:</span>
+            <span
+              class="font-semibold text-on-surface bg-surface-container px-2 py-0.5 rounded border border-[#E5E2DC]"
+              >1024px</span
+            >
+          </div>
+        </div>
+        <!-- Viewport Action CTAs -->
+        <div class="w-full grid grid-cols-4 gap-2 pt-2">
+          <!-- Primary Download Button -->
+          <button
+            class="col-span-3 h-11 px-4 rounded bg-primary-container hover:bg-primary text-on-primary font-body-md text-xs font-semibold tracking-wide transition-all shadow-[0_2px_8px_rgba(200,75,49,0.2)] flex items-center justify-center gap-2 active:scale-95"
+            id="btn-download"
+            onclick="downloadQrCode()"
+          >
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            <span id="download-btn-label">Download PNG</span>
+          </button>
+          <!-- Reset Button -->
+          <button
+            class="col-span-1 h-11 rounded border border-[#DCD8D0] bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-xs transition-all flex items-center justify-center"
+            onclick="resetParameters()"
+            title="Reset Configuration"
+          >
+            <span class="material-symbols-outlined text-[18px]"
+              >restart_alt</span
+            >
+          </button>
+        </div>
+      </div>
+      <!-- Print-Ready Guarantee Card -->
+      <div
+        class="bg-surface-container-lowest rounded border border-[#E5E2DC] p-4 flex items-center justify-between shadow-xs"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-8 h-8 rounded border border-[#DCD8D0] bg-surface-container-low flex items-center justify-center text-primary-container"
+          >
+            <span class="material-symbols-outlined text-[18px]"
+              >verified_user</span
+            >
+          </div>
+          <div class="flex flex-col">
+            <span class="font-label-md text-xs text-on-surface font-semibold"
+              >Print-Ready Proof Standard</span
+            >
+            <span class="font-body-sm text-[11px] text-on-surface-variant"
+              >Validated for offset lithography &amp; packaging</span
+            >
+          </div>
+        </div>
+        <span
+          class="font-code-sm text-xs text-secondary font-bold tracking-wider"
+          >100% SCAN</span
+        >
+      </div>
+    </div>
+  </div>
+</section>
